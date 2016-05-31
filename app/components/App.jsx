@@ -3,4 +3,4 @@ import { defaultTableConfig } from '../config';
 import Grid from './grid/Grid';
 require('./App.css');
 
-export default () => <Grid config={ defaultTableConfig } />;
+export default () => <Grid {...defaultTableConfig} />;

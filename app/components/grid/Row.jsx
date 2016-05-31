@@ -1,38 +1,56 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import Header from './Row.Header.jsx';
 import Cell from './Cell';
 import formatNumber from '../../formatters/formatNumber';
 
 class Row extends React.Component {
   static propTypes = {
-    values: React.PropTypes.arrayOf(React.PropTypes.oneOfType([
-      React.PropTypes.number,
-      React.PropTypes.string
-    ])).isRequired,
-    rowId: React.PropTypes.number.isRequired,
-    highlighted: React.PropTypes.bool.isRequired,
-    highlightedColId: React.PropTypes.number.isRequired
+    name: PropTypes.string.isRequired,
+    values: PropTypes.arrayOf(PropTypes.number).isRequired,
+    rowId: PropTypes.number.isRequired,
+    highlighted: PropTypes.bool,
+    highlightedCol: PropTypes.number,
+    pairs: PropTypes.arrayOf(PropTypes.object)
   };
 
-  isHighlighted(id) {
-    return this.props.highlighted || this.props.highlightedColId === id;
+  isHighlighted(cellId) {
+    return this.props.highlighted || this.props.highlightedCol === cellId;
+  }
+
+  isMarked(cellId) {
+    //todo iterate over pairs
+    return false;
+  }
+
+  getCellProps(cellId) {
+    console.log(['getCellProps'], cellId);
+    const isNameCell = (cellId === 0);
+
+    return {
+      rowId: this.props.rowId,
+      colId: cellId,
+      key: cellId,
+      highlighted: this.isHighlighted(cellId),
+      marked: this.isMarked(cellId),
+      editable: !isNameCell && this.props.editable
+    }
   }
 
   render() {
-    const values = this.props.values;
+    const { values, name }  = this.props;
     return (
       <tr>
-      {
-        values.map((value, id) => {
-          return (
-            <Cell rowId={ this.props.rowId } colId={ id } key={ id } highlighted={ this.isHighlighted(id) }>
-              { typeof value === 'number' ? formatNumber(value) : value}
-            </Cell>
-          );
-        })
-      }
+        <Cell {...this.getCellProps(0)}>{ name }</Cell>
+    {values.map((value, id) => {
+      return (
+        <Cell {...this.getCellProps(id+1)}>{ formatNumber(value) }</Cell>
+      );
+    })}
       </tr>
     )
   }
 }
+
+Row.Header = Header;
 
 export default Row;

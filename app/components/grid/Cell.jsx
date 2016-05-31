@@ -4,8 +4,9 @@ class Cell extends React.Component {
   static propTypes = {
     rowId: React.PropTypes.number.isRequired,
     colId: React.PropTypes.number.isRequired,
-    highlighted: React.PropTypes.bool.isRequired,
-    children:React.PropTypes.element.isRequired
+    highlighted: React.PropTypes.bool,
+    children: React.PropTypes.element,
+    editable: React.PropTypes.bool
   };
 
   render() {
