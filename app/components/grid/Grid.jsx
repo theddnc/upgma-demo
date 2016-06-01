@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Row from './Row';
+import { Table } from 'react-bootstrap';
 
 //todo use state to pass values to and from rows and cells
 
@@ -15,10 +16,14 @@ class Grid extends React.Component {
     editable: PropTypes.bool
   };
 
+  state = {
+    names: this.props.names,
+    values: this.props.values
+  };
+
   getHeaderRowProps() {
-    console.log(['getHeaderRowProps']);
     return {
-      names: [''].concat(this.props.names),
+      names: this.props.names,
       rowId: 0,
       highlightedCol: this.props.highlightedCol,
       key: 0
@@ -27,35 +32,45 @@ class Grid extends React.Component {
 
   getValueRowProps(rowId) {
     if (rowId >= 0 && rowId < this.props.names.length) {
-      const props = {
-        name: this.props.names[rowId],
-        values: this.props.values[rowId],
+      return {
+        name: this.state.names[rowId],
+        values: this.state.values[rowId],
         rowId: rowId + 1,
         highlighted: (this.props.highlightedRow === rowId + 1),
         highlightedCol: this.props.highlightedCol,
         pairs: this.props.pairs,
-        key: rowId + 1
+        key: rowId + 1,
+        onValueUpdate: this.onValueUpdate,
+        editable: this.props.editable
       };
-      console.log(['getValueRowProps'], rowId, props);
-      return props;
     }
-    console.log(['getValueRowProps'], rowId);
     return {};
   }
+
+  onValueUpdate = (rowId, colId, value) => {
+    console.log(['onValueUpdate'], rowId, colId, value);
+    let values = this.state.values;
+    values[rowId][colId] = value;
+    this.setState({
+      values
+    });
+  };
 
   render() {
     const { values } = this.props;
     return (
-      <table>
-        <tbody>
+      <Table bordered responsive>
+        <thead>
           <Row.Header {...this.getHeaderRowProps()} />
+        </thead>
+        <tbody>
       {values.map((_, id) => {
         return (
           <Row {...this.getValueRowProps(id)} />
         )
       })}
         </tbody>
-      </table>
+      </Table>
     )
   }
 }

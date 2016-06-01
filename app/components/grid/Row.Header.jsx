@@ -14,7 +14,6 @@ class Header extends React.Component {
   }
   
   getCellProps(cellId) {
-    console.log(['getCellProps'], cellId);
     return {
       rowId: this.props.rowId,
       colId: cellId,

@@ -6,11 +6,12 @@ import formatNumber from '../../formatters/formatNumber';
 class Row extends React.Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
-    values: PropTypes.arrayOf(PropTypes.number).isRequired,
+    values: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
     rowId: PropTypes.number.isRequired,
     highlighted: PropTypes.bool,
     highlightedCol: PropTypes.number,
-    pairs: PropTypes.arrayOf(PropTypes.object)
+    pairs: PropTypes.arrayOf(PropTypes.object),
+    onValueUpdate: PropTypes.function
   };
 
   isHighlighted(cellId) {
@@ -23,8 +24,8 @@ class Row extends React.Component {
   }
 
   getCellProps(cellId) {
-    console.log(['getCellProps'], cellId);
     const isNameCell = (cellId === 0);
+    const isPaddingCell = (cellId > this.props.values.length);
 
     return {
       rowId: this.props.rowId,
@@ -32,12 +33,14 @@ class Row extends React.Component {
       key: cellId,
       highlighted: this.isHighlighted(cellId),
       marked: this.isMarked(cellId),
-      editable: !isNameCell && this.props.editable
-    }
+      editable: !isPaddingCell && !isNameCell && this.props.editable,
+      onValueUpdate: this.props.onValueUpdate
+    };
   }
 
   render() {
     const { values, name }  = this.props;
+    values.concat()
     return (
       <tr>
         <Cell {...this.getCellProps(0)}>{ name }</Cell>
