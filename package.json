@@ -38,6 +38,7 @@
     "eslint-plugin-react": "4.x",
     "ghooks": "^1.0.3",
     "open-browser-webpack-plugin": "0.0.2",
+    "react-bootstrap": "^0.29.4",
     "style-loader": "~0.13.0",
     "validate-commit-msg": "2.x",
     "webpack": "1.x",
