@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 class Cell extends React.Component {
   static propTypes = {
@@ -7,7 +7,7 @@ class Cell extends React.Component {
     colId: React.PropTypes.number.isRequired,
     highlighted: React.PropTypes.bool,
     editable: React.PropTypes.bool,
-    onValueUpdate: React.PropTypes.function,
+    onValueUpdate: React.PropTypes.func,
     children: React.PropTypes.string
   };
 
@@ -24,17 +24,17 @@ class Cell extends React.Component {
     return {}
   }
 
-  onInputChange = () => {
-    const value = this.refs.cellValue.value;
+  onInputChange = (e) => {
+    const value = e.target.value;
     const { rowId, colId } = this.props;
-    this.props.onValueUpdate(rowId, colId, value);
+    this.props.onValueUpdate(rowId-1, colId-1, value);
   };
 
   render() {
     return (
       <td style={this.getCellStyle()}>
       { this.props.editable ? (
-        <Input type="text" onChange={this.onInputChange} defaultValue={ this.state.value } ref="cellValue"/>
+        <FormControl type="text" onChange={this.onInputChange} defaultValue={ this.state.value }/>
       ) : (
         this.state.value
       )}

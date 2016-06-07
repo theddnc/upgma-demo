@@ -11,7 +11,7 @@ class Row extends React.Component {
     highlighted: PropTypes.bool,
     highlightedCol: PropTypes.number,
     pairs: PropTypes.arrayOf(PropTypes.object),
-    onValueUpdate: PropTypes.function
+    onValueUpdate: PropTypes.func
   };
 
   isHighlighted(cellId) {

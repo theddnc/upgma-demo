@@ -13,7 +13,8 @@ class Grid extends React.Component {
     highlightedRow: PropTypes.number,
     highlightedCol: PropTypes.number,
     highlightedPairs: PropTypes.arrayOf(PropTypes.object),
-    editable: PropTypes.bool
+    editable: PropTypes.bool,
+    onGridChange: PropTypes.func
   };
 
   state = {
@@ -48,12 +49,12 @@ class Grid extends React.Component {
   }
 
   onValueUpdate = (rowId, colId, value) => {
-    console.log(['onValueUpdate'], rowId, colId, value);
     let values = this.state.values;
     values[rowId][colId] = value;
     this.setState({
       values
     });
+    this.props.onGridChange && this.props.onGridChange(values);
   };
 
   render() {
