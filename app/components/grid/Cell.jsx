@@ -32,7 +32,7 @@ class Cell extends React.Component {
 
   render() {
     return (
-      <td style={this.getCellStyle()}>
+      <td style={ Object.assign(this.getCellStyle(), { maxWidth: 25, textAlign: 'center' })}>
       { this.props.editable ? (
         <FormControl type="text" onChange={this.onInputChange} defaultValue={ this.state.value }/>
       ) : (

@@ -27,15 +27,15 @@ class StepView extends React.Component {
     return (
       <Row>
         <Col md={5}>
-          <Row><h1>{ `Krok ${step}` }</h1></Row>
+          <Row>
+            <h3 style={{ float: 'left', display: 'inline', marginTop: -5}}>{ `Krok ${step}` }</h3>
+            <Button style={{ float: 'right', display: 'inline', marginBottom: 10 }} bsStyle='primary' onClick={ this.onNextStep }>Następny krok</Button>
+          </Row>
           <Row>
             <Grid { ...gridConfig } />
           </Row>
           <Row>
             <Grid { ...reduceGrid(gridConfig) } />
-          </Row>
-          <Row>
-            <Button style={{ float: 'right'}} bsStyle='primary' onClick={ this.onNextStep }>Następny krok</Button>
           </Row>
         </Col>
         <Col md={7}>

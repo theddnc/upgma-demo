@@ -60,7 +60,7 @@ class Grid extends React.Component {
   render() {
     const { values } = this.props;
     return (
-      <Table bordered responsive>
+      <Table bordered condensed hover>
         <thead>
           <Row.Header {...this.getHeaderRowProps()} />
         </thead>

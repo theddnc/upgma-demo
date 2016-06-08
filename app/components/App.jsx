@@ -94,9 +94,12 @@ class App extends React.Component {
 
   render() {
     return (
-      <div style={{margin: '50px'}}>
-        <PageHeader marginBottom={50}>upgma-demo</PageHeader>
-        <Row>
+      <div style={{margin: 10}}>
+        <Row style={{ marginLeft: 15 }}>
+          <h1 style={{fontWeight: 800}}>upgma-demo</h1>
+          <h5>Unweighted Pair-Group Method with Arithmetic mean</h5>
+        </Row>
+        <Row style={{margin: 30}}>
         {
           this.getStepView()
         }

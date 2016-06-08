@@ -25,11 +25,13 @@ class FinalView extends React.Component {
     return (
       <Row>
         <Col md={5}>
-        <Row><h1>Podsumowanie</h1></Row>
+        <Row>
+          <h3 style={{ float: 'left', display: 'inline', marginTop: -5}}>Podsumowanie</h3>
+        </Row>
       {history.map((gridConfig, idx) => {
         return (
           <Row>
-            <h3>{`Krok ${idx}`}</h3>
+            <h4>{`Krok ${idx}`}</h4>
             <Grid {...gridConfig} key={idx} />
           </Row>
         );

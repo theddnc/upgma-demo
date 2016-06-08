@@ -24,15 +24,39 @@ class IntroView extends React.Component {
     return (
       <Row>
         <Col md={5}>
-          <Row><h1>Krok 0</h1></Row>
+          <Row>
+            <h3 style={{ float: 'left', display: 'inline', marginTop: -5}}>Krok 0</h3>
+            <Button style={{ float: 'right', display: 'inline', marginBottom: 10 }} bsStyle='primary' onClick={ this.onNextStep }>Następny krok</Button>
+          </Row>
           <Row>
             <Grid { ...gridConfig } onGridChange={this.props.onGridChange} />
           </Row>
-          <Row>
-            <Button style={{ float: 'right'}} bsStyle='primary' onClick={ this.onNextStep }>Następny krok</Button>
-          </Row>
         </Col>
-        <Col md={7} />
+        <Col md={7} >
+          <h3>Czym jest UPGMA?</h3>
+          <ul>
+            <li>
+              UPGMA (unweighted pair group method with arithmetic mean)
+              to najprostsza metoda grupująca taksony według ogólnego
+              podobieństwa lub odległości.
+            </li>
+            <li>
+              Pracuje wyłącznie na matrycach dystansowych np.
+              hybrydyzacja DNA-DNA lub konstruowanych z danych
+              sekwencyjnych na podstawie ilości substytucji.
+            </li>
+            <li>
+              UPGMA umożliwia określenie długości gałęzi (odlegości
+              ewolucyjnej) jak i uporządkowania gałęzi.
+            </li>
+            <li>
+              Zakłada stały zegar molekularny – możliwe jest teoretycznie
+              oszacowanie czasu dywergencji na podstawie różnic w
+              sekwencjach
+            </li>
+          </ul>
+          <h3>Jak korzystać z tego narzędzia?</h3>
+        </Col>
       </Row>
     )
   }
