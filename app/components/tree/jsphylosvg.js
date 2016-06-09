@@ -164,6 +164,8 @@ Smits = {};Smits.Common = {
 				dataObject = new Smits.PhyloCanvas.PhyloxmlParse(inputFormat.json);
 			} else if(inputFormat.newick){
 				dataObject = new Smits.PhyloCanvas.NewickParse(inputFormat.newick);
+      } else if(inputFormat.parsedNewick){
+				dataObject = inputFormat.parsedNewick;
 			} else if(inputFormat.nexmlJson){
 				dataObject = new Smits.PhyloCanvas.NexmlJsonParse(inputFormat);				
 			} else {
@@ -318,9 +320,15 @@ Smits.PhyloCanvas.Node.prototype = {
 			} else if (ch === "'" || ch === '"'){ 
 				node.type = "label";
 				node.name = quotedString(ch);
+        if (node.name.split('')[0] === '*') {
+          node.hidden=true;
+        }
 			} else {
 				node.type = "label";
 				node.name = string();
+        if (node.name.split('')[0] === '*') {
+          node.hidden=true;
+        }
 			}
 		}
 		node.level = parentNode.level + 1;
@@ -346,6 +354,9 @@ Smits.PhyloCanvas.Node.prototype = {
 		if(ch !== ':' && ch !== ')' && ch !== ',' && ch !== ';'){
 			node.type = "label";
 			node.name = string();
+      if (node.name.split('')[0] === '*') {
+        node.hidden=true;
+      }
 		}
 		if(ch === ':'){
 			next();
@@ -414,7 +425,10 @@ Smits.PhyloCanvas.Node.prototype = {
 		};
 		this.getNewickLen = function(){
 			return mNewickLen;
-		};		
+		};
+    this.setRoot = function(_root) {
+      root = _root;
+    };
 		this.getValidate = function(){
 			return validate;
 		};		
@@ -1000,10 +1014,21 @@ Smits.PhyloCanvas.NexmlParse.prototype = {
 		"stroke": 		'rgb(0,0,0)',
 		"stroke-width":	1
 	},
+
+  lineHidden: {
+		"stroke": 		'rgb(0,0,0)',
+		"stroke-width":	0
+	},
 	
 	text: {
 		"font-family":	'Verdana',
 		"font-size":	12,
+		"text-anchor":	'start'
+	},
+
+  textHidden: {
+		"font-family":	'Verdana',
+		"font-size":	0,
 		"text-anchor":	'start'
 	},
 	
@@ -1011,6 +1036,11 @@ Smits.PhyloCanvas.NexmlParse.prototype = {
 		"stroke": 		'rgb(0,0,0)',
 		"stroke-width":	1	
 	},
+
+  pathHidden: {
+    "stroke": 		'rgb(0,0,0)',
+		"stroke-width":	0
+  },
 	
 	connectedDash : {
 		"stroke": 			'rgb(200,200,200)',
@@ -1152,6 +1182,9 @@ Smits.PhyloCanvas.NexmlParse.prototype = {
 		this.y2 = y2;
 		
 		if(params) {
+      if (params.hidden) {
+        params.attr = Smits.PhyloCanvas.Render.Style.lineHidden;
+      }
 			Smits.Common.apply(this, params);
 			if(params.attr) this.attr = params.attr;
 		}
@@ -1169,6 +1202,9 @@ Smits.PhyloCanvas.NexmlParse.prototype = {
 		this.text = text;
 		
 		if(params) {
+      if (params.hidden) {
+        params.attr = Smits.PhyloCanvas.Render.Style.textHidden;
+      }
 			Smits.Common.apply(this, params);
 			if(params.attr) this.attr = params.attr;
 		}
@@ -1180,10 +1216,13 @@ Smits.PhyloCanvas.NexmlParse.prototype = {
 		/* Defaults */
 		this.type = 'path';
 		this.attr = Smits.PhyloCanvas.Render.Style.path;
-		
+
 		this.path = path;
 		if(params) {
-			Smits.Common.apply(this, params);
+      if (params.hidden) {
+        params.attr = Smits.PhyloCanvas.Render.Style.pathHidden;
+      }
+      Smits.Common.apply(this, params);
 			if(params.attr) this.attr = params.attr;
 		}
 
@@ -1220,11 +1259,11 @@ Smits.PhyloCanvas.NexmlParse.prototype = {
 	
 }();
 
+
 Smits.PhyloCanvas.Render.SVG.prototype = {
 
 	render : function(){
 		var instructs = this.phylogramObject.getDrawInstructs();
-		console.log('render', this.phylogramObject.getDrawInstructs());
 		for (var i = 0; i < instructs.length; i++) {
 		   if(instructs[i].type == 'line'){
 				var line = this.svg.path(["M", instructs[i].x1, instructs[i].y1, "L", instructs[i].x2, instructs[i].y2]).attr(Smits.PhyloCanvas.Render.Style.line);
@@ -1255,7 +1294,7 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 			param;
 
 	   if(instruct.type == 'line'){
-			obj = this.svg.path(["M", instruct.x1, instruct.y1, "L", instruct.x2, instruct.y2]).attr(Smits.PhyloCanvas.Render.Style.line);
+			obj = this.svg.path(["M", instruct.x1, instruct.y1, "L", instruct.x2, instruct.y2]).attr(instruct.attr);
 		} else if(instruct.type == 'path'){
 			obj = this.svg.path(instruct.path).attr(instruct.attr);			
 		} else if(instruct.type == 'circle'){
@@ -1312,7 +1351,7 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 				x2 = positionX = Smits.Common.roundFloat(positionX + (scaleX * node.len), 4);
 				y1 = absoluteY + (node.getMidbranchPosition(firstBranch) * scaleY);
 				y2 = y1;
-				svg.draw(new Smits.PhyloCanvas.Render.Line(x1, x2, y1, y2));
+				svg.draw(new Smits.PhyloCanvas.Render.Line(x1, x2, y1, y2, { hidden: node.hidden }));
 			}
 			
 			if(node.name){ // draw bootstrap values
@@ -1331,7 +1370,8 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 						(x2 || positionX) + 5, innerY2,
 						node.name,
 						{
-							attr: attr
+							attr: attr,
+              hidden: node.hidden
 						}
 					)
 				);			
@@ -1362,7 +1402,7 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 						"L", positionX, verticalY2,
 						"L", positionX + 0.0001, verticalY2
 					],
-					{ attr : Smits.PhyloCanvas.Render.Style.line }
+					{ attr : Smits.PhyloCanvas.Render.Style.line, hidden: node.hidden }
 				)				
 			);
 			
@@ -1377,12 +1417,12 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 			node.y = absoluteY;
 			labelsHold.push(node);				
 				
-			svg.draw(new Smits.PhyloCanvas.Render.Line(x1, x2, y1, y2));
+			svg.draw(new Smits.PhyloCanvas.Render.Line(x1, x2, y1, y2, { hidden: node.hidden }));
 			if(sParams.alignRight){
 				svg.draw(
 					new Smits.PhyloCanvas.Render.Path(
 						["M", x2, y1, "L", sParams.alignPadding + maxBranch, y2],
-						{ attr : Smits.PhyloCanvas.Render.Style.connectedDash }
+						{ attr : Smits.PhyloCanvas.Render.Style.connectedDash, hidden: node.hidden }
 					)
 				);			
 			}
@@ -1401,7 +1441,7 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 						sParams.alignRight ? maxBranch + sParams.bufferInnerLabels + sParams.alignPadding : x2 + sParams.bufferInnerLabels, y2,
 						node.name,
 						{
-							attr: attr
+							attr: attr, hidden: node.hidden
 						}
 					)
 				);				
@@ -1449,11 +1489,12 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 		y = absoluteY + scaleY;
 		x1 = 0;
 		x2 = sParams.showScaleBar * scaleX;
-		svg.draw(new Smits.PhyloCanvas.Render.Line(x1, x2, y, y));
+		svg.draw(new Smits.PhyloCanvas.Render.Line(x1, x2, y, y, { hidden: node.hidden }));
 		svg.draw(new Smits.PhyloCanvas.Render.Text(
 			(x1+x2)/2, 
 			y-8, 
-			sParams.showScaleBar)
+			sParams.showScaleBar,
+      { hidden:node.hidden })
 		);
 	},
 	
@@ -1473,7 +1514,7 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 						x + bufferInner + thickness, 
 						node.y + (scaleY/2) - (bufferSiblings/2)
 					),
-					{ attr: Smits.PhyloCanvas.Render.Style.getStyle(node.chart[groupName], 'textSecantBg') }
+					{ attr: Smits.PhyloCanvas.Render.Style.getStyle(node.chart[groupName], 'textSecantBg'), hidden: node.hidden }
 				)
 			);			
 		}
@@ -1504,7 +1545,7 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 							x + bufferInner + (scaleHeight * node.chart[groupName]), 
 							node.y + (width/2)
 						),					
-						{ attr: Smits.PhyloCanvas.Render.Style.getStyle(node.chart[groupName], 'barChart') }
+						{ attr: Smits.PhyloCanvas.Render.Style.getStyle(node.chart[groupName], 'barChart'), hidden: node.hidden }
 					)
 				);					
 		}
@@ -1555,7 +1596,7 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 		
 		// Draw Scale Bar
 		if(sParams.showScaleBar){
-			drawScaleBar();
+			drawScaleBar(node);
 		}
 		
 		outerX = maxBranch + maxLabelLength + sParams.bufferInnerLabels;
@@ -1726,14 +1767,15 @@ Smits.PhyloCanvas.Render.Phylogram.prototype = {
 							"M", secPosition(positionX + 0.01, minAngle), 
 							"L", secant(positionX, minAngle, maxAngle, {noMove: true}),
 							"L", secPosition(positionX + 0.01, maxAngle)
-						)
+						),
+            { hidden: node.hidden }
 					)
 				);
 			}
 			
 			if(node.len){ // draw stem
 				y1 = Smits.Common.roundFloat( minAngle + (maxAngle-minAngle)/2, 4 );
-				svg.draw(new Smits.PhyloCanvas.Render.Path(secLinePath(y1, x1, x2)));
+				svg.draw(new Smits.PhyloCanvas.Render.Path(secLinePath(y1, x1, x2), { hidden: node.hidden }));
 			}			
 			
 		} else {			
@@ -1747,11 +1789,11 @@ Smits.PhyloCanvas.Render.Phylogram.prototype = {
 			x2 = positionX =  Smits.Common.roundFloat(positionX + (scaleRadius * node.len));
 			y1 = absoluteY;
 				
-			svg.draw(new Smits.PhyloCanvas.Render.Path(secLinePath(y1, x1, x2)));
+			svg.draw(new Smits.PhyloCanvas.Render.Path(secLinePath(y1, x1, x2), { hidden: node.hidden }));
 			svg.draw(
 				new Smits.PhyloCanvas.Render.Path(
 					secLinePath(y1, x2, maxBranch), 
-					{ attr : Smits.PhyloCanvas.Render.Style.connectedDash }
+					{ attr : Smits.PhyloCanvas.Render.Style.connectedDash, hidden: node.hidden }
 				)
 			);
 			
@@ -1863,7 +1905,7 @@ Smits.PhyloCanvas.Render.Phylogram.prototype = {
 				var bgObj = svg.draw(
 					new Smits.PhyloCanvas.Render.Path(
 						arr, 
-						{ attr: attr.type ? {} : attr}
+						{ attr: attr.type ? {} : attr, hidden: node.hidden}
 					)
 				);
 				//if(attr.type && attr.type == "radialGradient") { bgObj[0].node.setAttribute('class', 'jsphylosvg-' + attr.name); };
@@ -1883,7 +1925,7 @@ Smits.PhyloCanvas.Render.Phylogram.prototype = {
 		var bgObj = svg.draw(
 			new Smits.PhyloCanvas.Render.Path(
 				arr, 
-				{ attr: Smits.PhyloCanvas.Render.Style.textSecantBg }
+				{ attr: Smits.PhyloCanvas.Render.Style.textSecantBg, hidden: node.hidden }
 			)
 		);
 		
@@ -1964,7 +2006,7 @@ Smits.PhyloCanvas.Render.Phylogram.prototype = {
 							sector( 
 								borderSectorCoords
 							),
-							{ attr: borderAttr }
+							{ attr: borderAttr, hidden: node.hidden }
 						)
 					);		
 					binBorder[0].toBack();
@@ -1975,7 +2017,7 @@ Smits.PhyloCanvas.Render.Phylogram.prototype = {
 						sector( 
 							sectorCoords
 						),
-						{ attr: attr }
+						{ attr: attr, hidden: node.hidden }
 					)
 				);	
 				binObj[0].toBack();
@@ -2018,7 +2060,7 @@ Smits.PhyloCanvas.Render.Phylogram.prototype = {
 								node.y - (width/2), 
 								node.y + (width/2)
 							),
-							{ attr: Smits.PhyloCanvas.Render.Style.getStyle(node.chart[groupName], 'barChart') }
+							{ attr: Smits.PhyloCanvas.Render.Style.getStyle(node.chart[groupName], 'barChart'), hidden: node.hidden }
 						)
 				);					
 			}

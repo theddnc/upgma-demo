@@ -13,7 +13,7 @@ class Tree extends React.Component {
   }
 
   treeConfigToNewickFormat(treeConfig) {
-    return `${this.convertSubtree(treeConfig)}${treeConfig.name}${treeConfig.distance ? `:${treeConfig.distance}` : ''};`;
+    return `${this.convertSubtree(treeConfig)}${treeConfig.hidden ? '*': ''}${treeConfig.name}${treeConfig.distance ? `:${treeConfig.distance}` : ''};`;
   }
 
   convertSubtree(tree) {
@@ -22,7 +22,7 @@ class Tree extends React.Component {
       if (child.children && child.children.length > 0) {
         result = `${result}${this.convertSubtree(child)}`;
       }
-      const name = `${child.name}${child.distance ? ` [${child.distance}]` : ''}`;
+      const name = `${child.hidden ? '*' : ''}${child.name}${child.distance ? ` [${child.distance}]` : ''}`;
       result = `${result}${name}${
         child.distance ? `:${child.distance}` : ''
       }`;

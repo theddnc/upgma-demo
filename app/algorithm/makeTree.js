@@ -9,30 +9,35 @@ export default (gridConfig, step) => {
     nodeStructure: {
       name: '',
       distance: 0.5,
+      hidden: true,
       children: [
-        { name: 'E', distance: 17 },
+        { name: 'E', distance: 17, hidden: true},
         {
           name: '',
           distance: 2.5,
+          hidden: true,
           children: [
-            { name: 'C', distance: 14.5 },
+            { name: 'C', distance: 14.5, hidden: true },
             {
               name: '',
               distance: 6.25,
+              hidden: true,
               children: [
                 {
                   name: '',
                   distance: 4.25,
+                  hidden: true,
                   children: [
-                    { name: 'A', distance: 4.0 },
-                    { name: 'D', distance: 4.0 }
+                    { name: 'A', distance: 4.0, hidden: true },
+                    { name: 'D', distance: 4.0, hidden: true }
                   ]
                 },
                 {
                   name: '',
                   distance: 2.0,
+                  hidden: true,
                   children: [
-                    { name: 'G', distance: 6.25 },
+                    { name: 'G', distance: 6.25},
                     {
                       name: '',
                       distance: 5.75,
