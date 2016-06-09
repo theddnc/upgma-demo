@@ -17,6 +17,13 @@ class Grid extends React.Component {
     onGridChange: PropTypes.func
   };
 
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      names: newProps.names,
+      values: newProps.values
+    });
+  }
+
   state = {
     names: this.props.names,
     values: this.props.values

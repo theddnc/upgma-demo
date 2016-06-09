@@ -1,7 +1,6 @@
 import reduceGrid from './reduceGrid';
 
 export default (gridConfig, step) => {
-  const newGridConfig = reduceGrid(gridConfig);
 
   //todo: write make-tree algorithm
 
@@ -37,7 +36,7 @@ export default (gridConfig, step) => {
                   distance: 2.0,
                   hidden: true,
                   children: [
-                    { name: 'G', distance: 6.25},
+                    { name: 'G', distance: 6.25, hidden: true },
                     {
                       name: '',
                       distance: 5.75,

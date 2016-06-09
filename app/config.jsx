@@ -9,10 +9,10 @@ const defaultTableConfig = {
     [18.00, 1.00, 32.00, 17.00, 35.00],
     [13.00, 13.00, 29.00, 14.00, 28.00, 12.00]
   ],
-  highlightedRow: 5,
-  highlightedCol: 5,
-  highlightedPairs: [
-    { first: { x: 2, y: 3 }, second: { x: 3, y: 4 } }
+  highlightedRows: [5, 6],
+  highlightedCols: [5, 6],
+  highlightedGroups: [
+    { coords: [{ x: 2, y: 3 },{ x: 3, y: 4 }], color: '#0000FF' }
   ],
   editable: true
 };

@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react';
 import Grid from '../grid/Grid';
 import Tree from '../tree/Tree';
-import reduceGrid from '../../algorithm/reduceGrid';
-import makeTree from '../../algorithm/makeTree';
 import { Col, PageHeader, Row, Button } from 'react-bootstrap';
 
 class FinalView extends React.Component {
@@ -13,10 +11,7 @@ class FinalView extends React.Component {
   };
 
   onNextStep = () => {
-    const newGridConfig = reduceGrid(this.props.gridConfig);
-    const newTreeConfig = makeTree(this.props.gridConfig);
-
-    this.props.onStepChange(newGridConfig, newTreeConfig);
+    this.props.onStepChange();
   };
   
   render() {

@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
 import Grid from '../grid/Grid';
-import reduceGrid from '../../algorithm/reduceGrid';
-import makeTree from '../../algorithm/makeTree';
 import { Col, Row, Button } from 'react-bootstrap';
 
 class IntroView extends React.Component {
@@ -12,10 +10,7 @@ class IntroView extends React.Component {
   };
 
   onNextStep = () => {
-    const newGridConfig = reduceGrid(this.props.gridConfig);
-    const newTreeConfig = makeTree(this.props.gridConfig);
-
-    this.props.onStepChange(newGridConfig, newTreeConfig);
+    this.props.onStepChange();
   };
   
   render() {

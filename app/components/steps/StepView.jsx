@@ -1,28 +1,23 @@
 import React, { PropTypes } from 'react';
 import Grid from '../grid/Grid';
 import Tree from '../tree/Tree';
-import reduceGrid from '../../algorithm/reduceGrid';
-import makeTree from '../../algorithm/makeTree';
 import { Col, PageHeader, Row, Button } from 'react-bootstrap';
 
 class StepView extends React.Component {
   static propTypes = {
     step: PropTypes.number,
     gridConfig: PropTypes.object,
+    reducedGridConfig: PropTypes.object,
     treeConfig: PropTypes.object,
     onStepChange: PropTypes.func
   };
 
   onNextStep = () => {
-    const { gridConfig, step} = this.props;
-    const newGridConfig = reduceGrid(gridConfig, step);
-    const newTreeConfig = makeTree(gridConfig, step);
-
-    this.props.onStepChange(newGridConfig, newTreeConfig, step === 4); //todo real flag xD
+    this.props.onStepChange();
   };
   
   render() {
-    const { gridConfig, treeConfig, step } = this.props;
+    const { gridConfig, reducedGridConfig, treeConfig, step } = this.props;
 
     return (
       <Row>
@@ -35,7 +30,7 @@ class StepView extends React.Component {
             <Grid { ...gridConfig } />
           </Row>
           <Row>
-            <Grid { ...reduceGrid(gridConfig) } />
+            <Grid { ...reducedGridConfig } />
           </Row>
         </Col>
         <Col md={7}>

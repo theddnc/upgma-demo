@@ -11,6 +11,12 @@ class Cell extends React.Component {
     children: React.PropTypes.string
   };
 
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      value: newProps.children
+    });
+  }
+
   state = {
     value: this.props.children
   };

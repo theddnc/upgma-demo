@@ -3,27 +3,29 @@ import StepView from './steps/StepView'
 import { defaultTableConfig } from '../config';
 import IntroView from './steps/IntroView';
 import FinalView from './steps/FinalView';
+import { Algorithm } from '../algorithm/Algorithm';
 import { Col, PageHeader, Row } from 'react-bootstrap';
 
 class App extends React.Component {
   state = {
     step: 0,
-    currentGridConfig: defaultTableConfig,
-    history: [],
-    currentTree: {}
+    gridConfig: defaultTableConfig,
+    reducedGridConfig: {},
+    currentTree: {},
+    algorithm: new Algorithm(defaultTableConfig)
   };
 
   getIntroViewProps() {
     return {
       onStepChange: this.onStepChange,
-      gridConfig: this.state.currentGridConfig
+      gridConfig: this.state.gridConfig
     };
   }
 
   getFinalViewProps() {
     return {
+      history: this.state.algorithm.getHistory(),
       onStepChange: this.onStepChange,
-      history: this.state.history,
       treeConfig: this.state.currentTree
     };
   }
@@ -32,7 +34,8 @@ class App extends React.Component {
     return {
       onStepChange: this.onStepChange,
       step: this.state.step,
-      gridConfig: this.state.currentGridConfig,
+      gridConfig: this.state.gridConfig,
+      reducedGridConfig: this.state.reducedGridConfig,
       treeConfig: this.state.currentTree
     }
   }
@@ -46,32 +49,44 @@ class App extends React.Component {
     }
     return this.state.step + 1;
   }
-  
-  onStepChange = (newGridConfig, newTreeConfig, isFinalStep = false) => {
-    const history = this.state.history;
-    history.push(newGridConfig);
-    console.log(['onStepChange'], newGridConfig, newTreeConfig, isFinalStep, this.state.history);
+
+  onStepChange = () => {
+    if (this.state.step === 'final') {
+      return this.setState({
+        step: 0,
+        gridConfig: defaultTableConfig,
+        reducedGridConfig: {},
+        currentTree: {}
+      })
+    }
+    const gridConfig = this.state.algorithm.getGridConfByStep(0);
+    const reducedGridConfig = this.state.algorithm.getGridConfByStep(this.state.step+1);
+    const currentTree = this.state.algorithm.getTreeConfByStep(this.state.step+1);
+    const isFinalStep = reducedGridConfig === null;
+
     if (this.getNextStep(isFinalStep) === 0) {
       this.setState({
         step: 0,
-        currentGridConfig: defaultTableConfig,
-        history: [],
+        gridConfig: defaultTableConfig,
+        reducedGridConfig: {},
         currentTree: {}
       })
     } else {
       this.setState({
         step: this.getNextStep(isFinalStep),
-        history,
-        currentGridConfig: newGridConfig,
-        currentTree: newTreeConfig
+        reducedGridConfig,
+        gridConfig,
+        currentTree
       })
     }
   };
 
   onGridChange = (newValues) => {
     console.log(['onGridChange'], newValues);
+    const newGrid = Object.assign({}, this.state.gridConfig, { values: newValues });
     this.setState({
-      currentGridConfig: Object.assign({}, this.state.currentGridConfig, { values: newValues })
+      currentGridConfig: newGrid,
+      algorithm: new Algorithm(newGrid)
     });
   };
 

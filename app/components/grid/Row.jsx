@@ -39,8 +39,7 @@ class Row extends React.Component {
   }
 
   render() {
-    const { values, name }  = this.props;
-    values.concat()
+    const { values, name } = this.props;
     return (
       <tr>
         <Cell {...this.getCellProps(0)}>{ name }</Cell>

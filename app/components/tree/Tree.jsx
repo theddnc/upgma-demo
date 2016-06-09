@@ -5,11 +5,12 @@ class Tree extends React.Component {
     nodeStructure: PropTypes.object
   };
 
+  componentWillReceiveProps(newProps) {
+    this.renderTree(newProps);
+  }
+
   componentDidMount() {
-    console.log(['componentDidMount'], this.props);
-    const newickData = this.treeConfigToNewickFormat(this.props.nodeStructure);
-    console.log(newickData);
-    const tree = new Smits.PhyloCanvas(newickData, 'phylogenetic-tree', 500, 500);
+    this.renderTree(this.props);
   }
 
   treeConfigToNewickFormat(treeConfig) {
@@ -22,7 +23,8 @@ class Tree extends React.Component {
       if (child.children && child.children.length > 0) {
         result = `${result}${this.convertSubtree(child)}`;
       }
-      const name = `${child.hidden ? '*' : ''}${child.name}${child.distance ? ` [${child.distance}]` : ''}`;
+      const label = child.name.indexOf('+') === -1 ? child.name : '';
+      const name = `${child.hidden ? '*' : ''}${label}${child.distance ? ` [${child.distance}]` : ''}`;
       result = `${result}${name}${
         child.distance ? `:${child.distance}` : ''
       }`;
@@ -30,10 +32,20 @@ class Tree extends React.Component {
     });
     return result;
   }
+
+  renderTree(props) {
+    const div = document.getElementById('phylogenetic-tree');
+    while(div.firstChild){
+      div.removeChild(div.firstChild);
+    }
+    const newickData = this.treeConfigToNewickFormat(props.nodeStructure);
+    console.log(['renderTree'], newickData);
+    const tree = new Smits.PhyloCanvas(newickData, 'phylogenetic-tree', 500, 500);
+  }
   
   render() {
     return (
-      <div style={{ width: '500px', height: '500px' }} id="phylogenetic-tree"></div>
+      <div style={{ width: '500px', height: '1000px' }} id="phylogenetic-tree"></div>
     )
   }
 }

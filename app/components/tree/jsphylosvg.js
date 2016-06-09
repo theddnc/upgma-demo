@@ -1359,10 +1359,11 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 				attr = Smits.PhyloCanvas.Render.Style.getStyle('bootstrap', 'text');
 				if(node.uri) { attr.href = node.uri };
 				if(node.description) {attr.title = node.description };
+        var innerY2;
 				if(node.level == 0){ 
-					var innerY2 = absoluteY + (node.getMidbranchPosition(firstBranch) * scaleY);
+					innerY2 = absoluteY + (node.getMidbranchPosition(firstBranch) * scaleY);
 				} else {
-					var innerY2 = y2;
+					innerY2 = y2;
 				}
 				
 				svg.draw(
@@ -1485,8 +1486,8 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 
 	},
 	
-	drawScaleBar = function (){
-		y = absoluteY + scaleY;
+	drawScaleBar = function (node ){
+		var y = absoluteY + scaleY;
 		x1 = 0;
 		x2 = sParams.showScaleBar * scaleX;
 		svg.draw(new Smits.PhyloCanvas.Render.Line(x1, x2, y, y, { hidden: node.hidden }));
