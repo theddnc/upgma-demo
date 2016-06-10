@@ -31,6 +31,7 @@ class FinalView extends React.Component {
         <Col md={5}>
         <Row>
           <h3 style={{ float: 'left', display: 'inline', marginTop: -5}}>Podsumowanie</h3>
+          <Button style={{ float: 'right', display: 'inline', marginBottom: 10 }} bsStyle='success' onClick={ this.onNextStep }>Od początku</Button>
         </Row>
       {history.map((gridConfig, idx) => {
         return (
