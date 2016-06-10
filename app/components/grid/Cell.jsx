@@ -13,7 +13,7 @@ class Cell extends React.Component {
     children: React.PropTypes.string
   };
 
-  static HIGHLIGHT_COLOR = 'rgba(30, 240, 10, 0.4)';
+  static HIGHLIGHT_COLOR = 'rgba(250, 230, 10, 0.4)';
 
   static STYLE_DEFAULTS =  {
     minWidth: 60,

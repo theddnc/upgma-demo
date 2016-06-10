@@ -115,7 +115,7 @@ class App extends React.Component {
     return (
       <div style={{margin: 10}}>
         <Row style={{ marginLeft: 15 }}>
-          <h1 style={{fontWeight: 800}}>upgma-demo</h1>
+          <h1 style={{fontWeight: 800, color: 'rgb(30,120,10)' }}>upgma-demo</h1>
           <h5>Unweighted Pair-Group Method with Arithmetic mean</h5>
         </Row>
         <Row style={{margin: 30}}>

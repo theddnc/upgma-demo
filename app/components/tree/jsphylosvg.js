@@ -1011,7 +1011,7 @@ Smits.PhyloCanvas.NexmlParse.prototype = {
 	/* Default Styles */
 	
 	line: {
-		"stroke": 		'rgb(0,80,0)',
+		"stroke": 		'rgb(30,120,10)',
 		"stroke-width":	3
 	},
 
@@ -1033,7 +1033,7 @@ Smits.PhyloCanvas.NexmlParse.prototype = {
 	},
 	
 	path: {
-		"stroke": 		'rgb(0,80,0)',
+		"stroke": 		'rgb(30,120,10)',
 		"stroke-width":	3
 	},
 
