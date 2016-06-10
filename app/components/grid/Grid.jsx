@@ -10,9 +10,9 @@ class Grid extends React.Component {
     values: PropTypes.arrayOf(
       PropTypes.arrayOf(PropTypes.number)
     ),
-    highlightedRow: PropTypes.number,
-    highlightedCol: PropTypes.number,
-    highlightedPairs: PropTypes.arrayOf(PropTypes.object),
+    highlightedRows: PropTypes.arrayOf(PropTypes.number),
+    highlightedCols: PropTypes.arrayOf(PropTypes.number),
+    highlightedGroups: PropTypes.arrayOf(PropTypes.object),
     editable: PropTypes.bool,
     onGridChange: PropTypes.func
   };
@@ -33,7 +33,7 @@ class Grid extends React.Component {
     return {
       names: this.props.names,
       rowId: 0,
-      highlightedCol: this.props.highlightedCol,
+      highlightedCols: this.props.highlightedCols,
       key: 0
     };
   }
@@ -44,9 +44,9 @@ class Grid extends React.Component {
         name: this.state.names[rowId],
         values: this.state.values[rowId],
         rowId: rowId + 1,
-        highlighted: (this.props.highlightedRow === rowId + 1),
-        highlightedCol: this.props.highlightedCol,
-        pairs: this.props.pairs,
+        highlighted: (this.props.highlightedRows.indexOf(rowId + 1) !== -1),
+        highlightedCols: this.props.highlightedCols,
+        highlightedGroups: this.props.highlightedGroups,
         key: rowId + 1,
         onValueUpdate: this.onValueUpdate,
         editable: this.props.editable
@@ -67,7 +67,7 @@ class Grid extends React.Component {
   render() {
     const { values } = this.props;
     return (
-      <Table bordered condensed hover>
+      <Table bordered condensed hover style={{ width: 'inherit' }}>
         <thead>
           <Row.Header {...this.getHeaderRowProps()} />
         </thead>

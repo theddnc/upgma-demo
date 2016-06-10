@@ -6,11 +6,11 @@ class Header extends React.Component {
   static propTypes = {
     names: PropTypes.arrayOf(PropTypes.string),
     rowId: PropTypes.number.isRequired,
-    highlightedCol: PropTypes.number
+    highlightedCols: PropTypes.arrayOf(PropTypes.number)
   };
 
   isHighlighted(cellId) {
-    return this.props.highlightedCol === cellId;
+    return this.props.highlightedCols.indexOf(cellId) !== -1;
   }
   
   getCellProps(cellId) {

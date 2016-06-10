@@ -13,6 +13,15 @@ class FinalView extends React.Component {
   onNextStep = () => {
     this.props.onStepChange();
   };
+
+  static clearGridColors(grid) {
+    return Object.assign({}, grid, {
+      highlightedCols: [],
+      highlightedRows: [],
+      highlightedGroups: [],
+      editable: false
+    });
+  }
   
   render() {
     const { history, treeConfig } = this.props;
@@ -27,7 +36,7 @@ class FinalView extends React.Component {
         return (
           <Row>
             <h4>{`Krok ${idx}`}</h4>
-            <Grid {...gridConfig} key={idx} />
+            <Grid {...FinalView.clearGridColors(gridConfig)} key={idx} />
           </Row>
         );
       })}

@@ -12,7 +12,7 @@ const defaultTableConfig = {
   highlightedRows: [5, 6],
   highlightedCols: [5, 6],
   highlightedGroups: [
-    { coords: [{ x: 2, y: 3 },{ x: 3, y: 4 }], color: '#0000FF' }
+    { coords: [{ x: 2, y: 3 },{ x: 3, y: 4 }], id: 0 }
   ],
   editable: true
 };

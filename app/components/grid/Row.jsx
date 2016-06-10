@@ -9,18 +9,13 @@ class Row extends React.Component {
     values: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
     rowId: PropTypes.number.isRequired,
     highlighted: PropTypes.bool,
-    highlightedCol: PropTypes.number,
-    pairs: PropTypes.arrayOf(PropTypes.object),
+    highlightedCols: PropTypes.arrayOf(PropTypes.number),
+    highlightedGroups: PropTypes.arrayOf(PropTypes.object),
     onValueUpdate: PropTypes.func
   };
 
   isHighlighted(cellId) {
-    return this.props.highlighted || this.props.highlightedCol === cellId;
-  }
-
-  isMarked(cellId) {
-    //todo iterate over pairs
-    return false;
+    return this.props.highlighted || this.props.highlightedCols.indexOf(cellId) !== -1;
   }
 
   getCellProps(cellId) {
@@ -32,7 +27,7 @@ class Row extends React.Component {
       colId: cellId,
       key: cellId,
       highlighted: this.isHighlighted(cellId),
-      marked: this.isMarked(cellId),
+      highlightedGroups: this.props.highlightedGroups,
       editable: !isPaddingCell && !isNameCell && this.props.editable,
       onValueUpdate: this.props.onValueUpdate
     };

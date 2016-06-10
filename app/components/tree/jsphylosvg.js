@@ -269,10 +269,10 @@ Smits.PhyloCanvas.Node.prototype = {
 			var child = this.children[i];
 			if(child.children && child.children.length > 0){
 				if(i == 0 && firstBranch){
-					y[0] = child.getMidbranchPosition(true);				
+					y[0] = child.getMidbranchPosition(true);
 					y[1] += child.getCountAllChildren() - 1;	
 				} else if(i == 0){
-					y[0] = child.getMidbranchPosition();				
+					y[0] = child.getMidbranchPosition();
 					y[1] += child.getCountAllChildren();	
 				} else if (i == this.children.length - 1){
 					y[1] += child.getMidbranchPosition();
@@ -284,7 +284,7 @@ Smits.PhyloCanvas.Node.prototype = {
 					y[0] = 0;
 				} else if(i == 0){
 					y[0] = 1;
-					y[1] += 1;	
+					y[1] += 1;
 				} else if (i == this.children.length - 1){
 					y[1] += 1;
 				} else {
@@ -293,7 +293,7 @@ Smits.PhyloCanvas.Node.prototype = {
 			}
 		}
 		
-		this._midBranchPosition = y[1] >= y[0] ? ((y[1] + y[0]) / 2) : y[0];
+		this._midBranchPosition = (y[1] >= y[0] ? ((y[1] + y[0]) / 2) : y[0]);
 		return this._midBranchPosition;
 	}
 	
@@ -1011,18 +1011,18 @@ Smits.PhyloCanvas.NexmlParse.prototype = {
 	/* Default Styles */
 	
 	line: {
-		"stroke": 		'rgb(0,0,0)',
-		"stroke-width":	1
+		"stroke": 		'rgb(0,80,0)',
+		"stroke-width":	3
 	},
 
   lineHidden: {
-		"stroke": 		'rgb(0,0,0)',
-		"stroke-width":	0
+		"stroke": 		'rgba(0,0,0,0.2)',
+		"stroke-width":	1
 	},
 	
 	text: {
 		"font-family":	'Verdana',
-		"font-size":	12,
+		"font-size": 15,
 		"text-anchor":	'start'
 	},
 
@@ -1033,13 +1033,13 @@ Smits.PhyloCanvas.NexmlParse.prototype = {
 	},
 	
 	path: {
-		"stroke": 		'rgb(0,0,0)',
-		"stroke-width":	1	
+		"stroke": 		'rgb(0,80,0)',
+		"stroke-width":	3
 	},
 
   pathHidden: {
-    "stroke": 		'rgb(0,0,0)',
-		"stroke-width":	0
+    "stroke": 		'rgba(0,0,0,0.2)',
+		"stroke-width":	1
   },
 	
 	connectedDash : {
@@ -1592,7 +1592,8 @@ Smits.PhyloCanvas.Render.SVG.prototype = {
 		if(Smits.PhyloCanvas.Render.Parameters.binaryCharts.length || Smits.PhyloCanvas.Render.Parameters.barCharts.length){
 			sParams.alignRight = true;
 		}
-		
+
+    firstBranch = true;
 		recursiveCalculateNodePositions(node, paddingX);
 		
 		// Draw Scale Bar

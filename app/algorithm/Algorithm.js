@@ -69,6 +69,12 @@ class Algorithm {
     return i < this.treeHistory.length ? this.treeHistory[i] : this.treeHistory[this.treeHistory.length-1];
   }
 
+  getHighlightedGroupsByStep(i){
+    return {
+      highlightedGroups: []
+    }
+  }
+
   getHistory(){
     return this.gridHistory;
   }

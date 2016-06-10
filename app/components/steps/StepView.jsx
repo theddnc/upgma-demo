@@ -27,7 +27,7 @@ class StepView extends React.Component {
             <Button style={{ float: 'right', display: 'inline', marginBottom: 10 }} bsStyle='primary' onClick={ this.onNextStep }>Następny krok</Button>
           </Row>
           <Row>
-            <Grid { ...gridConfig } />
+            <Grid { ...Object.assign({}, gridConfig, { editable: false }) } />
           </Row>
           <Row>
             <Grid { ...reducedGridConfig } />

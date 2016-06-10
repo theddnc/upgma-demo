@@ -50,7 +50,7 @@ class App extends React.Component {
     return this.state.step + 1;
   }
 
-  onStepChange = () => {
+  onStepChange = (forward) => {
     if (this.state.step === 'final') {
       return this.setState({
         step: 0,
@@ -59,7 +59,11 @@ class App extends React.Component {
         currentTree: {}
       })
     }
-    const gridConfig = this.state.algorithm.getGridConfByStep(0);
+    const gridConfig = Object.assign(
+      {},
+      this.state.algorithm.getGridConfByStep(0),
+      this.state.algorithm.getHighlightedGroupsByStep(this.state.step+1)
+    );
     const reducedGridConfig = this.state.algorithm.getGridConfByStep(this.state.step+1);
     const currentTree = this.state.algorithm.getTreeConfByStep(this.state.step+1);
     const isFinalStep = reducedGridConfig === null;
