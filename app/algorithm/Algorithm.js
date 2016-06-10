@@ -106,6 +106,7 @@ class Algorithm {
     //Remove second old label
     names.splice(rightId,1);
     //recalculate distances
+    var id = 0;
     for (let i =0; i< names.length; i++){
       values.push([]);
       for(let j = 0; j<i;j++){
@@ -116,8 +117,9 @@ class Algorithm {
 
         var points = this.getPoints(node1, node2);
         if(points.length > 1){
-          highlightedOriginalGroups.push({id: i, value: dist, coords: points});
-          highlightedGroups.push({id:i, value:dist, coords: [{x:i, y:j, value:dist}]})
+          highlightedOriginalGroups.push({id: id, value: dist, coords: points});
+          highlightedGroups.push({id:id, value:dist, coords: [{x:i, y:j, value:dist}]});
+          id++;
         }
       }
     }
