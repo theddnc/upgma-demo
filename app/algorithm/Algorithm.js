@@ -6,8 +6,10 @@ class Algorithm {
     this.distanceMatrix = gridConfig.values;
     this.nodeHistory = [];
     this.gridHistory = [];
-    this.currGridConf = gridConfig;
+    this.currGridConf = (Object.assign({}, gridConfig));
+    this.currGridConf.editable = false;
     this.treeHistory = [];
+    this.highlightedGroups = [];
     this.finished = false;
     this.nodeCount = 2*gridConfig.values.length - 1;
     this.calculateTree();
@@ -51,8 +53,8 @@ class Algorithm {
         this.finished = true;
       }
     }
-
     this.treeHistory.push(this.getTree());
+    this.gridHistory.push(Object.assign({}, this.currGridConf));
     for (let i=0; i<this.nodeHistory.length ; i++){
       this.refreshTree(i);
       this.refreshGrid(i);
@@ -81,10 +83,14 @@ class Algorithm {
 
   refreshGrid(i){
     this.gridHistory.push(this.currGridConf);
-    this.currGridConf = this.getGrid(i)
+    this.currGridConf = this.getNextGrid(i)
   }
 
-  getGrid(i) {
+  getHighlightedGroups(i){
+
+  }
+
+  getNextGrid(i) {
     var newNode = this.nodeHistory[i];
     var names = this.currGridConf.names.slice();
     var values = [];
@@ -103,10 +109,13 @@ class Algorithm {
         values[i].push(this.getDistance(node1, node2));
       }
     }
-    const highlightedRows = [];
-    const highlightedCols = [];
-    const highlightedGroups = [];
-    const editable = false;
+    //highlight previous table
+    this.currGridConf.highlightedRows = [leftId+1, rightId+1];
+    this.currGridConf.highlightedCols = [leftId+1, rightId+1];
+    var highlightedRows= [];
+    var highlightedCols = [];
+    var highlightedGroups = [];
+    var editable = false;
     return {
       names,
       values,
@@ -115,6 +124,19 @@ class Algorithm {
       highlightedGroups,
       editable
     };
+  }
+  
+  getPoints(node1, node2) {
+    var points = [];
+    for (var point1 of node1.points) {
+      for (var point2 of node2.points) {
+        if (point1.id > point2.id)
+          points.push({x:point2.id, y:point1.id});
+        else
+          points.push({x:point1.id, y:point2.id});
+      }
+    }
+    return points;
   }
 
   getNodeByLabel(label){
@@ -139,7 +161,7 @@ class Algorithm {
 
   getTreeConf(node){
     var nodeConf = {
-      name: node.label,
+      name: node.label.indexOf("+")!= -1? "" : node.label,
       distance: node.distance/2,
       hidden: node.hidden
     };
@@ -207,9 +229,20 @@ class Node{
       this.distance = distance;
     }
     else {
-      this.distance = distance - this.left.distance;
+      this.distance = distance - this.getChildrenDistance();
     }
   }
+
+  getChildrenDistance(){
+    var dist = 0;
+    var child = this.left;
+    while (child != null){
+      dist += child.distance;
+      child = child.left
+    }
+    return dist;
+  }
+
   setVisible(){
     this.hidden = false;
     if (this.left != null)

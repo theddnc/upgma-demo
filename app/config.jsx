@@ -11,7 +11,9 @@ const defaultTableConfig = {
   ],
   highlightedRows: [],
   highlightedCols: [],
-  highlightedGroups: [],
+  highlightedGroups: [
+    // { coords: [{ x: 2, y: 3 },{ x: 3, y: 4 }], id: 0 }
+  ],
   editable: true
 };
 
