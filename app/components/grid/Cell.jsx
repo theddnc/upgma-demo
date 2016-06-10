@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormControl } from 'react-bootstrap';
+import { GROUP_COLORS } from '../../constants';
 
 class Cell extends React.Component {
   static propTypes = {
@@ -11,14 +12,6 @@ class Cell extends React.Component {
     onValueUpdate: React.PropTypes.func,
     children: React.PropTypes.string
   };
-
-  static GROUP_COLORS = [
-    'rgba(120, 7, 173, 1)',
-    'rgba(255, 30, 0, 1)',
-    'rgba(0, 193, 51, 1)',
-    'rgba(248, 254, 0, 1)',
-    'rgba(76, 150, 194, 1)'
-  ];
 
   static HIGHLIGHT_COLOR = 'rgba(30, 240, 10, 0.4)';
 
@@ -44,7 +37,7 @@ class Cell extends React.Component {
     for (const group of this.props.highlightedGroups) {
       for (const item of group.coords) {
         if (item.x === this.props.colId && item.y === this.props.rowId) {
-          return Cell.GROUP_COLORS[group.id];
+          return GROUP_COLORS[group.id];
         }
       }
     }

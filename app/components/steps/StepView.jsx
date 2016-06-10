@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Grid from '../grid/Grid';
 import Tree from '../tree/Tree';
+import Equation from '../equation/Equation';
 import { Col, PageHeader, Row, Button } from 'react-bootstrap';
 
 class StepView extends React.Component {
@@ -28,6 +29,13 @@ class StepView extends React.Component {
           </Row>
           <Row>
             <Grid { ...Object.assign({}, gridConfig, { editable: false }) } />
+          </Row>
+          <Row>
+        {gridConfig.highlightedGroups.map((item) => {
+          return (
+            <Equation group={item} />
+          )}
+        )}
           </Row>
           <Row>
             <Grid { ...reducedGridConfig } />
