@@ -31,12 +31,12 @@ class Cell extends React.Component {
   }
 
   getGroupColor() {
-    if (!this.props.highlightedOriginalGroupsHistory) {
+    if (!this.props.highlightedGroups) {
       return null;
     }
-    for (const group of this.props.highlightedOriginalGroupsHistory) {
+    for (const group of this.props.highlightedGroups) {
       for (const item of group.coords) {
-        if (item.x === this.props.colId && item.y === this.props.rowId) {
+        if (item.x+1 === this.props.colId && item.y+1 === this.props.rowId) {
           return GROUP_COLORS[group.id % GROUP_COLORS.length];
         }
       }

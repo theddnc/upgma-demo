@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { FormControl } from 'react-bootstrap';
 import { GROUP_COLORS } from '../../constants';
+import formatNumber from '../../formatters/formatNumber';
 
 
 class Equation extends React.Component {
@@ -11,9 +12,9 @@ class Equation extends React.Component {
   makeEquation() {
     const { group } = this.props;
     const sum = group.coords.reduce((sum, item) => {
-      return `${item.value} + ${sum}`
+      return `${formatNumber(item.value)} + ${sum}`
     }, '').slice(0, -3);
-    return `${sum} = ${group.value}`;
+    return `(${sum}) ÷ ${group.coords.length} = ${formatNumber(group.value)}`;
   }
 
   getStyle() {

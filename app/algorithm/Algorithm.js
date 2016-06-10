@@ -77,7 +77,9 @@ class Algorithm {
 
   getHighlightedGroupsByStep(i){
     console.log(['highlightedOriginalGroupsHistory'], i, this.highlightedOriginalGroupsHistory[i]);
-    return i < this.highlightedOriginalGroupsHistory.length ? this.highlightedOriginalGroupsHistory[i] : this.highlightedOriginalGroupsHistory[this.highlightedOriginalGroupsHistory.length-1];
+    return {
+      highlightedGroups: i < this.highlightedOriginalGroupsHistory.length ? this.highlightedOriginalGroupsHistory[i] : this.highlightedOriginalGroupsHistory[this.highlightedOriginalGroupsHistory.length-1]
+    }
   }
 
   getHistory(){

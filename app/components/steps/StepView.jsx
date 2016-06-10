@@ -31,14 +31,14 @@ class StepView extends React.Component {
             <Grid { ...Object.assign({}, gridConfig, { editable: false }) } />
           </Row>
           <Row>
+            <Grid { ...reducedGridConfig } />
+          </Row>
+          <Row>
         {gridConfig.highlightedGroups.map((item, idx) => {
           return (
             <Equation group={item} key={idx}/>
           )}
         )}
-          </Row>
-          <Row>
-            <Grid { ...reducedGridConfig } />
           </Row>
         </Col>
         <Col md={7}>
