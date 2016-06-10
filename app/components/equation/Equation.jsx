@@ -18,7 +18,7 @@ class Equation extends React.Component {
 
   getStyle() {
     return {
-      color: GROUP_COLORS[this.props.group.id],
+      color: GROUP_COLORS[this.props.group.id % GROUP_COLORS.length],
       fontWeight: 900,
       fontSize: 20,
       marginBottom: 15,

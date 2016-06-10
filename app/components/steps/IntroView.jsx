@@ -51,6 +51,21 @@ class IntroView extends React.Component {
             </li>
           </ul>
           <h3>Jak korzystać z tego narzędzia?</h3>
+          <ol>
+            <li>
+              W tabeli po lewej stronie wpisz wartości reprezentujące odległości
+              pomiędzy jednostkami taksonomicznymi.
+            </li>
+            <li>
+              Kolejne ekrany reprezentują poszczególne kroki algorytmu. Na każdym z
+              nich widnieje zredukowana macierz podobieństwa oraz poszczególne części
+              drzewa filogenicznego.
+            </li>
+            <li>
+              Na ostatnim ekranie przedstawione zostaną wszystkie kroki algorytmu,
+              tj. wszystkie macierze podobieństwa oraz ostateczny wygląd drzewa.
+            </li>
+          </ol>
         </Col>
       </Row>
     )

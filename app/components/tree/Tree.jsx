@@ -45,12 +45,12 @@ class Tree extends React.Component {
     }
     const newickData = this.treeConfigToNewickFormat(props.nodeStructure);
     console.log(['renderTree'], newickData);
-    const tree = new Smits.PhyloCanvas(newickData, 'phylogenetic-tree', 500, 500);
+    const tree = new Smits.PhyloCanvas(newickData, 'phylogenetic-tree', 800, 500);
   }
   
   render() {
     return (
-      <div style={{ width: '500px', height: '1000px' }} id="phylogenetic-tree"></div>
+      <div style={{ width: '800px', height: '1000px' }} id="phylogenetic-tree"></div>
     )
   }
 }

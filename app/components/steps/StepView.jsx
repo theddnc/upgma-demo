@@ -31,9 +31,9 @@ class StepView extends React.Component {
             <Grid { ...Object.assign({}, gridConfig, { editable: false }) } />
           </Row>
           <Row>
-        {gridConfig.highlightedGroups.map((item) => {
+        {gridConfig.highlightedGroups.map((item, idx) => {
           return (
-            <Equation group={item} />
+            <Equation group={item} key={idx}/>
           )}
         )}
           </Row>

@@ -34,7 +34,7 @@ class FinalView extends React.Component {
         </Row>
       {history.map((gridConfig, idx) => {
         return (
-          <Row>
+          <Row key={idx}>
             <h4>{`Krok ${idx}`}</h4>
             <Grid {...FinalView.clearGridColors(gridConfig)} key={idx} />
           </Row>

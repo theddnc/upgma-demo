@@ -37,7 +37,7 @@ class Cell extends React.Component {
     for (const group of this.props.highlightedOriginalGroupsHistory) {
       for (const item of group.coords) {
         if (item.x === this.props.colId && item.y === this.props.rowId) {
-          return GROUP_COLORS[group.id];
+          return GROUP_COLORS[group.id % GROUP_COLORS.length];
         }
       }
     }
