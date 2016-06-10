@@ -24,7 +24,7 @@ class IntroView extends React.Component {
             <Button style={{ float: 'right', display: 'inline', marginBottom: 10 }} bsStyle='primary' onClick={ this.onNextStep }>Następny krok</Button>
           </Row>
           <Row>
-            <Grid { ...gridConfig } onGridChange={this.props.onGridChange} />
+            <Grid { ...Object.assign({}, gridConfig, { highlightedRows: [], highlightedCols: [] }) } onGridChange={this.props.onGridChange} />
           </Row>
         </Col>
         <Col md={7} >

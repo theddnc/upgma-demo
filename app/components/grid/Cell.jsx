@@ -69,7 +69,7 @@ class Cell extends React.Component {
   onInputChange = (e) => {
     const value = e.target.value;
     const { rowId, colId } = this.props;
-    this.props.onValueUpdate(rowId-1, colId-1, value);
+    this.props.onValueUpdate(rowId-1, colId-1, Number(value));
   };
 
   render() {

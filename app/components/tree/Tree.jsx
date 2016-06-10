@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import formatNumber from '../../formatters/formatNumber';
 
 class Tree extends React.Component {
   static propTypes = {
@@ -14,7 +15,10 @@ class Tree extends React.Component {
   }
 
   treeConfigToNewickFormat(treeConfig) {
-    return `${this.convertSubtree(treeConfig)}${treeConfig.hidden ? '*': ''}${treeConfig.name}${treeConfig.distance ? `:${treeConfig.distance}` : ''};`;
+    const label = treeConfig.name.indexOf('+') === -1 ? treeConfig.name : '';
+    const distance = `${treeConfig.distance ? ` [${formatNumber(treeConfig.distance)}]` : ''}`;
+    const name = `${treeConfig.hidden ? '*' : ''}${label}${distance}`;
+    return `${this.convertSubtree(treeConfig)}${treeConfig.hidden ? '*': ''}${name}${treeConfig.distance ? `:${treeConfig.distance}` : ''};`;
   }
 
   convertSubtree(tree) {
@@ -24,7 +28,8 @@ class Tree extends React.Component {
         result = `${result}${this.convertSubtree(child)}`;
       }
       const label = child.name.indexOf('+') === -1 ? child.name : '';
-      const name = `${child.hidden ? '*' : ''}${label}${child.distance ? ` [${child.distance}]` : ''}`;
+      const distance = `${child.distance ? ` [${formatNumber(child.distance)}]` : ''}`;
+      const name = `${child.hidden ? '*' : ''}${label}${distance}`;
       result = `${result}${name}${
         child.distance ? `:${child.distance}` : ''
       }`;

@@ -9,11 +9,9 @@ const defaultTableConfig = {
     [18.00, 1.00, 32.00, 17.00, 35.00],
     [13.00, 13.00, 29.00, 14.00, 28.00, 12.00]
   ],
-  highlightedRows: [5, 6],
-  highlightedCols: [5, 6],
-  highlightedGroups: [
-    { coords: [{ x: 2, y: 3 },{ x: 3, y: 4 }], id: 0 }
-  ],
+  highlightedRows: [],
+  highlightedCols: [],
+  highlightedGroups: [],
   editable: true
 };
 
