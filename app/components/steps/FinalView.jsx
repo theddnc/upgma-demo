@@ -18,7 +18,7 @@ class FinalView extends React.Component {
     return Object.assign({}, grid, {
       highlightedCols: [],
       highlightedRows: [],
-      highlightedGroups: [],
+      highlightedOriginalGroupsHistory: [],
       editable: false
     });
   }

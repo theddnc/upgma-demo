@@ -9,7 +9,7 @@ class Algorithm {
     this.currGridConf = (Object.assign({}, gridConfig));
     this.currGridConf.editable = false;
     this.treeHistory = [];
-    this.highlightedGroups = [];
+    this.highlightedOriginalGroupsHistory = [];
     this.finished = false;
     this.nodeCount = 2*gridConfig.values.length - 1;
     this.calculateTree();
@@ -53,8 +53,12 @@ class Algorithm {
         this.finished = true;
       }
     }
+
+
     this.treeHistory.push(this.getTree());
     this.gridHistory.push(Object.assign({}, this.currGridConf));
+    this.highlightedOriginalGroupsHistory.push([]);
+    this.highlightedOriginalGroupsHistory.push([]);
     for (let i=0; i<this.nodeHistory.length ; i++){
       this.refreshTree(i);
       this.refreshGrid(i);
@@ -72,9 +76,8 @@ class Algorithm {
   }
 
   getHighlightedGroupsByStep(i){
-    return {
-      highlightedGroups: []
-    }
+    console.log(['highlightedOriginalGroupsHistory'], i, this.highlightedOriginalGroupsHistory[i]);
+    return i < this.highlightedOriginalGroupsHistory.length ? this.highlightedOriginalGroupsHistory[i] : this.highlightedOriginalGroupsHistory[this.highlightedOriginalGroupsHistory.length-1];
   }
 
   getHistory(){
@@ -86,16 +89,16 @@ class Algorithm {
     this.currGridConf = this.getNextGrid(i)
   }
 
-  getHighlightedGroups(i){
-
-  }
-
   getNextGrid(i) {
     var newNode = this.nodeHistory[i];
     var names = this.currGridConf.names.slice();
     var values = [];
     var leftId = names.indexOf(newNode.left.label);
     var rightId = names.indexOf(newNode.right.label);
+
+    var highlightedOriginalGroups = [];
+    var highlightedGroups = [];
+
     //Replace old label with combined one
     names[leftId] = newNode.label;
     //Remove second old label
@@ -106,15 +109,22 @@ class Algorithm {
       for(let j = 0; j<i;j++){
         var node1 = this.getNodeByLabel(names[j]);
         var node2 = this.getNodeByLabel(names[i]);
-        values[i].push(this.getDistance(node1, node2));
+        var dist = this.getDistance(node1, node2);
+        values[i].push(dist);
+
+        var points = this.getPoints(node1, node2);
+        if(points.length > 1){
+          highlightedOriginalGroups.push({id: i, value: dist, coords: points});
+          highlightedGroups.push({id:i, value:dist, coords: [{x:i, y:j, value:dist}]})
+        }
       }
     }
     //highlight previous table
     this.currGridConf.highlightedRows = [leftId+1, rightId+1];
     this.currGridConf.highlightedCols = [leftId+1, rightId+1];
+    this.highlightedOriginalGroupsHistory.push(highlightedOriginalGroups);
     var highlightedRows= [];
     var highlightedCols = [];
-    var highlightedGroups = [];
     var editable = false;
     return {
       names,
@@ -131,9 +141,9 @@ class Algorithm {
     for (var point1 of node1.points) {
       for (var point2 of node2.points) {
         if (point1.id > point2.id)
-          points.push({x:point2.id, y:point1.id});
+          points.push({x:point2.id, y:point1.id, value: this.getOriginalDistance(point1, point2)});
         else
-          points.push({x:point1.id, y:point2.id});
+          points.push({x:point1.id, y:point2.id, value: this.getOriginalDistance(point1, point2)});
       }
     }
     return points;

@@ -46,7 +46,7 @@ class Grid extends React.Component {
         rowId: rowId + 1,
         highlighted: (this.props.highlightedRows.indexOf(rowId + 1) !== -1),
         highlightedCols: this.props.highlightedCols,
-        highlightedGroups: this.props.highlightedGroups,
+        highlightedOriginalGroupsHistory: this.props.highlightedOriginalGroupsHistory,
         key: rowId + 1,
         onValueUpdate: this.onValueUpdate,
         editable: this.props.editable

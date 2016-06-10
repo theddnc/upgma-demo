@@ -27,7 +27,7 @@ class Row extends React.Component {
       colId: cellId,
       key: cellId,
       highlighted: this.isHighlighted(cellId),
-      highlightedGroups: this.props.highlightedGroups,
+      highlightedOriginalGroupsHistory: this.props.highlightedOriginalGroupsHistory,
       editable: !isPaddingCell && !isNameCell && this.props.editable,
       onValueUpdate: this.props.onValueUpdate
     };
