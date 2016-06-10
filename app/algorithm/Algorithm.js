@@ -118,7 +118,7 @@ class Algorithm {
         var points = this.getPoints(node1, node2);
         if(points.length > 1){
           highlightedOriginalGroups.push({id: id, value: dist, coords: points});
-          highlightedGroups.push({id:id, value:dist, coords: [{x:i, y:j, value:dist}]});
+          highlightedGroups.push({id:id, value:dist, coords: [{x:j, y:i, value:dist}]});
           id++;
         }
       }
